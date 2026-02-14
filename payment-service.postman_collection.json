@@ -1,0 +1,71 @@
+{
+  "info": {
+    "_postman_id": "624658ca-d3d0-40b4-9d50-102b0ce33391",
+    "name": "payment-service",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "41733535"
+  },
+  "item": [
+    {
+      "name": "ping",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY5MDEyMDcyLCJpYXQiOjE3Njg5MjU2NzIsImp0aSI6IjAxMWNhN2RlYjA2OTQ0NmU4YTY4Mzg0MjkxMDk5YTFkIiwidXNlcl9pZCI6ImY4YmI0ZTcwLWZjZDYtNGY1Ny1iMTg3LTRiMmYyMTg5NzZmMyJ9.dpOlvH6-DbgShSS5UnWZkbJuwILacP0XIWQRWyc1nIM",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-User-Id",
+            "value": "edcc5989-d244-4867-95af-4c6de9265465",
+            "type": "text",
+            "disabled": true
+          },
+          {
+            "key": "X-User-Role",
+            "value": "ADMIN",
+            "type": "text",
+            "disabled": true
+          },
+          {
+            "key": "X-User-Status",
+            "value": "ACTIVE",
+            "type": "text",
+            "disabled": true
+          },
+          {
+            "key": "X-User-Name",
+            "value": "Jornoe",
+            "type": "text",
+            "disabled": true
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\": \"some_mail@gmail.ru\",\r\n    \"password\": \"!Maks1234\"\r\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/ping",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "ping"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
