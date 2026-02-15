@@ -6,28 +6,6 @@ from pydantic import BaseModel
 from pydantic.v1 import root_validator
 
 
-class CurrencyEnum(StrEnum):
-    USD = "USD"
-    EUR = "EUR"
-    AUD = "AUD"
-    CAD = "CAD"
-    ARS = "ARS"
-    PLN = "PLN"
-    BTC = "BTC"
-    ETH = "ETH"
-    DOGE = "DOGE"
-    USDT = "USDT"
-
-class UserStatusEnum(StrEnum):
-    ACTIVE = "ACTIVE"
-    BLOCKED = "BLOCKED"
-
-class TransactionStatusEnum(StrEnum):
-    processed = "PROCESSED"
-    roll_backed = "ROLLBACKED"
-
-
-
 class RequestUserModel(BaseModel):
     email: str
 
