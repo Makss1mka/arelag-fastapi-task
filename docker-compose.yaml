@@ -12,9 +12,7 @@ x-payment-service-environment: &payment-service-environment
   REDIS_PORT: "6379"
 
   # OTHER
-  DEFAULT_FROM_EMAIL: ${CAR_DEFAULT_FROM_EMAIL}
-  SECRET_KEY: ${CAR_DEALERSHIP_APP_SECRET_KEY}
-  DEBUG_MODE: ${CAR_DEALERSHIP_DEBUG_MODE}
+  SECRET_KEY: ${SECRET_KEY}
 
 
 services:
@@ -34,8 +32,8 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
-    ports:
-      - "5435:5432"
+    # ports:
+    #   - "5435:5432"
     volumes:
       - ./pg-data:/var/lib/postgresql/data
     healthcheck:

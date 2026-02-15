@@ -1,0 +1,46 @@
+"""
+Enum classes
+"""
+
+from enum import StrEnum
+
+
+class CurrencyEnum(StrEnum):
+    """
+    Enum for currencies
+    """
+
+    USD = "USD"
+    EUR = "EUR"
+    AUD = "AUD"
+    CAD = "CAD"
+    ARS = "ARS"
+    PLN = "PLN"
+    BTC = "BTC"
+    ETH = "ETH"
+    DOGE = "DOGE"
+    USDT = "USDT"
+    BYN = "BYN"
+    RUB = "RUB"
+
+
+class UserStatusEnum(StrEnum):
+    """
+    Enum for users statuses
+    """
+
+    ACTIVE = "ACTIVE"
+    BLOCKED = "BLOCKED"
+    FREEZED = "FREEZED"
+
+
+class TransactionStatusEnum(StrEnum):
+    """
+    Enum for payments statuses
+    """
+
+    PENDING = "PENDING"
+    processed = "PROCESSED"
+    PROCESSING = "PROCESSING"
+    FAILED = "FAILED"
+    CANCELLED = "CANCELLED"
