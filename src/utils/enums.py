@@ -44,3 +44,13 @@ class TransactionStatusEnum(StrEnum):
     PROCESSING = "PROCESSING"
     FAILED = "FAILED"
     CANCELLED = "CANCELLED"
+
+
+class ResponseTextStatus(StrEnum):
+    """
+    Common response text statuses
+    """
+
+    SUCCESS = "success"
+    EXCEPTION = "exception"
+

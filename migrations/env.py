@@ -22,7 +22,7 @@ from src.models.users import User, UserBalance
 from src.models.payments import Transaction
 
 target_metadata = Base.metadata
-database_url = os.environ.get("DB_URL", None)
+database_url = os.environ.get("MIGRATIONS_DB_URL", None)
 
 if not database_url:
     raise ValueError("Cannot find database url")
