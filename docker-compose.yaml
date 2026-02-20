@@ -1,20 +1,4 @@
 
-x-payment-service-environment: &payment-service-environment
-  # DB
-  DB_USER: ${DB_USER}
-  DB_PASSWORD: ${DB_PASSWORD}
-  DB_NAME: ${DB_NAME}
-  DB_HOST: "payment-service-database"
-  DB_PORT: "5432"
-
-  # REDIS
-  REDIS_HOST: "payment-service-redis"
-  REDIS_PORT: "6379"
-
-  # OTHER
-  SECRET_KEY: ${SECRET_KEY}
-
-
 services:
   payment-service-redis:
     image: redis:7
@@ -23,7 +7,7 @@ services:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
     networks:
-      - backend
+      - payment-service-network
 
   payment-service-database:
     image: postgres:17
@@ -32,21 +16,24 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
-    # ports:
-    #   - "5435:5432"
+    ports:
+      - "5435:5432"
     volumes:
       - ./pg-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
     networks:
-      - backend
+      - payment-service-network
 
   payment-service-app:
     build: .
     container_name: "payment-service"
     environment:
-      <<: *payment-service-environment
+      DB_URL: ${DB_URL}
+      REDIS_URL: ${REDIS_URL}
+      SECRET_KEY: ${SECRET_KEY}
+      MIGRATIONS_DB_URL: ${MIGRATIONS_DB_URL}
     depends_on:
       payment-service-database:
         condition: service_healthy
@@ -57,8 +44,8 @@ services:
     volumes:
       - ./:/app
     networks:
-      - backend
+      - payment-service-network
 
 networks:
-  backend:
+  payment-service-network:
     driver: bridge

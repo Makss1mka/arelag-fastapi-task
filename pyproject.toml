@@ -17,6 +17,7 @@ uvicorn = "^0.40.0"
 psycopg2-binary = "^2.9.11"
 alembic = "^1.18.4"
 python-dotenv = "^1.2.1"
+redis = "^7.2.0"
 
 
 [tool.poetry.group.dev.dependencies]
