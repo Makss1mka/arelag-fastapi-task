@@ -6,23 +6,6 @@ from pydantic import BaseModel
 from pydantic.v1 import root_validator
 
 
-class RequestUserModel(BaseModel):
-    email: str
-
-class RequestUserUpdateModel(BaseModel):
-    status: UserStatusEnum
-
-class ResponseUserBalanceModel(BaseModel):
-    currency: typing.Optional[CurrencyEnum] = None
-    amount: typing.Optional[float] = None
-
-class ResponseUserModel(BaseModel):
-    id: typing.Optional[int]
-    email: typing.Optional[str] = None
-    status: typing.Optional[UserStatusEnum] = None
-    created: typing.Optional[datetime] = None
-    balances: typing.Optional[typing.List[ResponseUserBalanceModel]] = None
-
 class UserModel(BaseModel):
     id: typing.Optional[int]
     email: typing.Optional[str] = None
