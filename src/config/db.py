@@ -2,15 +2,15 @@
 Database setup.
 """
 
+import logging
 from contextlib import asynccontextmanager
+from dataclasses import dataclass
+from typing import AsyncGenerator, Type
+
+from fastapi import FastAPI, Request
+from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
-from fastapi import Request, FastAPI
-from typing import AsyncGenerator
-from sqlalchemy import text
-from dataclasses import dataclass
-
-import logging
 
 logger: logging.Logger = logging.getLogger(__name__)
 
@@ -28,11 +28,7 @@ class DbPoolConfig:
 
 
 @asynccontextmanager
-async def init_db(
-    app: FastAPI,
-    connection_url: str,
-    pool_config: DbPoolConfig
-) -> None:
+async def init_db(app: FastAPI, connection_url: str, pool_config: DbPoolConfig) -> None:
     logger.info(f"Initializing database engine")
 
     app.state.db_engine = create_async_engine(
@@ -47,10 +43,7 @@ async def init_db(
         hide_parameters=pool_config.hide_parameters,
     )
 
-    app.state.Session = sessionmaker(
-        app.state.db_engine,
-        class_=AsyncSession
-    )
+    app.state.Session = sessionmaker(app.state.db_engine, class_=AsyncSession, expire_on_commit=False)
 
     logger.info("Database engine initialized")
 
@@ -60,7 +53,7 @@ async def init_db(
 
         async with app.state.Session() as session:
             await session.execute(text("SELECT 1"))
-        
+
         logger.debug("Database is reachable")
     except Exception as e:
         logger.error(f"Failed to connect to the database: {e}")
@@ -83,5 +76,5 @@ async def get_db_session(req: Request) -> AsyncGenerator[AsyncSession, None]:
         yield session
 
 
-async def get_db_session_class(req: Request) -> AsyncGenerator[AsyncSession, None]:
+async def get_db_session_class(req: Request) -> AsyncGenerator[Type[AsyncSession], None]:
     return req.app.state.Session

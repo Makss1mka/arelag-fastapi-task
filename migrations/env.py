@@ -17,11 +17,11 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 
-from src.models.base import Base, BaseModel
+from src.models.base import BaseModel
 from src.models.users import User, UserBalance
-from src.models.payments import Transaction
+from src.models.payments import PaymentTransaction
 
-target_metadata = Base.metadata
+target_metadata = BaseModel.metadata
 database_url = os.environ.get("MIGRATIONS_DB_URL", None)
 
 if not database_url:

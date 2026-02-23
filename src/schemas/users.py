@@ -3,15 +3,16 @@ User schemas
 """
 
 import uuid
-from pydantic import BaseModel
-from typing import Optional, List
+from typing import List, Optional
 
-from src.utils.enums import Currency, UserStatus
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
+from src.utils.enums import Currency, UserBalanceUpdateDirection, UserStatus
 
 #
 # RESPONSES
 #
+
 
 class UserBalanceResponseModel(BaseModel):
     """
@@ -20,6 +21,8 @@ class UserBalanceResponseModel(BaseModel):
 
     currency: Currency
     amount: float
+
+    model_config = ConfigDict(from_attributes=True)
 
 
 class UserResponseModel(BaseModel):
@@ -32,17 +35,20 @@ class UserResponseModel(BaseModel):
     status: UserStatus
     balances: Optional[List[UserBalanceResponseModel]] = None
 
+    model_config = ConfigDict(from_attributes=True)
+
 
 #
 # REQUESTS
 #
+
 
 class UserCreateRequestModel(BaseModel):
     """
     User create request model
     """
 
-    email: str
+    email: EmailStr = Field(..., min_length=10, max_length=50)
 
 
 class UserUpdateRequestModel(BaseModel):
@@ -50,4 +56,13 @@ class UserUpdateRequestModel(BaseModel):
     User update request model
     """
 
-    status: UserStatus
+    status: UserStatus = Field(...)
+
+
+class UserBalanceUpdateRequestModel(BaseModel):
+    """
+    Request model for updating one user balance
+    """
+
+    amount: int = Field(..., gt=0)
+    direction: UserBalanceUpdateDirection = Field(...)

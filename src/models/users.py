@@ -22,7 +22,9 @@ class User(BaseModel):
     )
 
     balances: Mapped[List["UserBalance"]] = relationship("UserBalance", back_populates="user")
-    transactions: Mapped[List["Transaction"]] = relationship("Transaction", back_populates="user")
+    transactions: Mapped[List["src.models.payments.PaymentTransaction"]] = relationship(
+        "src.models.payments.PaymentTransaction", back_populates="user"
+    )
 
 
 class UserBalance(BaseModel):

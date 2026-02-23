@@ -12,7 +12,7 @@ from src.models.base import BaseModel
 from src.utils.enums import Currency, TransactionStatus
 
 
-class Transaction(BaseModel):
+class PaymentTransaction(BaseModel):
     __tablename__ = "transactions"
 
     user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"), nullable=False)

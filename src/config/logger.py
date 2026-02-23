@@ -2,9 +2,10 @@
 Logging setup.
 """
 
-from fastapi.logger import logger as fastapi_logger
 import logging
 import sys
+
+from fastapi.logger import logger as fastapi_logger
 
 
 def setup_logging(logs_level: int, logs_format: str) -> None:

@@ -2,13 +2,13 @@
 Redis setup
 """
 
-from contextlib import asynccontextmanager
 import logging
+from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from typing import AsyncGenerator, Optional
 
 from fastapi import FastAPI, Request
-from redis.asyncio import Redis, ConnectionPool
+from redis.asyncio import ConnectionPool, Redis
 
 logger: logging.Logger = logging.getLogger(__name__)
 
@@ -24,11 +24,7 @@ class RedisPoolConfig:
 
 
 @asynccontextmanager
-async def init_redis(
-    app: FastAPI,
-    connection_url: str,
-    pool_config: RedisPoolConfig
-) -> None:
+async def init_redis(app: FastAPI, connection_url: str, pool_config: RedisPoolConfig) -> None:
     logger.info("Start Redis initializing...")
 
     pool = ConnectionPool.from_url(
@@ -37,11 +33,11 @@ async def init_redis(
         socket_timeout=pool_config.socket_timeout,
         socket_connect_timeout=pool_config.socket_connect_timeout,
         health_check_interval=pool_config.health_check_interval,
-        decode_responses=pool_config.decode_responses
+        decode_responses=pool_config.decode_responses,
     )
 
     redis_client = Redis(connection_pool=pool)
-    
+
     app.state.redis_pool = pool
     app.state.redis_client = redis_client
 
