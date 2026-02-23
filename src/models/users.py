@@ -10,28 +10,29 @@ from sqlalchemy import CheckConstraint, Enum, ForeignKey, Numeric, String, Uniqu
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.models.base import BaseModel
-from src.utils.enums import CurrencyEnum, UserStatusEnum
+from src.utils.enums import Currency, UserStatus
 
 
 class User(BaseModel):
     __tablename__ = "users"
 
     email: Mapped[Optional[str]] = mapped_column(String(63), unique=True, index=True, nullable=True)
-    password: Mapped[str] = mapped_column(String(255), nullable=False)
-    status: Mapped[UserStatusEnum] = mapped_column(
-        Enum(UserStatusEnum), nullable=False, default=UserStatusEnum.ACTIVE, server_default=UserStatusEnum.ACTIVE.value
+    status: Mapped[UserStatus] = mapped_column(
+        Enum(UserStatus), nullable=False, default=UserStatus.ACTIVE, server_default=UserStatus.ACTIVE.value
     )
 
     balances: Mapped[List["UserBalance"]] = relationship("UserBalance", back_populates="user")
-    transactions: Mapped[List["Transaction"]] = relationship("Transaction", back_populates="user")
+    transactions: Mapped[List["src.models.payments.PaymentTransaction"]] = relationship(
+        "src.models.payments.PaymentTransaction", back_populates="user"
+    )
 
 
 class UserBalance(BaseModel):
     __tablename__ = "users_balances"
 
     user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"), nullable=False)
-    currency: Mapped[CurrencyEnum] = mapped_column(
-        Enum(CurrencyEnum), nullable=False, default=CurrencyEnum.USD, server_default=CurrencyEnum.USD.value
+    currency: Mapped[Currency] = mapped_column(
+        Enum(Currency), nullable=False, default=Currency.USD, server_default=Currency.USD.value
     )
     amount: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False, default=0, server_default="0")
 

@@ -5,7 +5,7 @@ Enum classes
 from enum import StrEnum
 
 
-class CurrencyEnum(StrEnum):
+class Currency(StrEnum):
     """
     Enum for currencies
     """
@@ -24,7 +24,7 @@ class CurrencyEnum(StrEnum):
     RUB = "RUB"
 
 
-class UserStatusEnum(StrEnum):
+class UserStatus(StrEnum):
     """
     Enum for users statuses
     """
@@ -34,7 +34,7 @@ class UserStatusEnum(StrEnum):
     FREEZED = "FREEZED"
 
 
-class TransactionStatusEnum(StrEnum):
+class TransactionStatus(StrEnum):
     """
     Enum for payments statuses
     """
@@ -54,3 +54,11 @@ class ResponseTextStatus(StrEnum):
     SUCCESS = "success"
     EXCEPTION = "exception"
 
+
+class UserBalanceUpdateDirection(StrEnum):
+    """
+    Enum class for updating user balance, it represents direction of balance change (Up or Down)
+    """
+
+    UP = "up"
+    DOWN = "down"

@@ -2,29 +2,27 @@
 Exception handlers
 """
 
-from src.utils.enums import ResponseTextStatus
-from src.utils.responses import CommonResponseModel
+import logging
 
+from fastapi import HTTPException, Request, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from fastapi import HTTPException, Request, status
 
-import logging
+from src.utils.enums import ResponseTextStatus
+from src.utils.responses import CommonJSONResponse
 
 logger: logging.Logger = logging.getLogger(__name__)
 
 
-async def http_exception_handler(req: Request, ex: HTTPException):
+async def http_exception_handler(req: Request, exc: HTTPException):
     """
     Exception handler for all HttpExceptions
     """
 
-    return JSONResponse(
-        status_code=ex.status_code,
-        content=CommonResponseModel(
-            status=ResponseTextStatus.EXCEPTION,
-            message=ex.detail,
-        ).model_dump(exclude_unset=True)
+    return CommonJSONResponse(
+        None,
+        status_code=exc.status_code,
+        message=exc.detail,
     )
 
 
@@ -39,20 +37,9 @@ async def pydantic_exception_handler(req: Request, exc: RequestValidationError):
         message = error.get("msg")
         error_type = error.get("type")
 
-        errors.append({
-            "field": field,
-            "message": message,
-            "type": error_type
-        })
+        errors.append({"field": field, "message": message, "type": error_type})
 
-    return JSONResponse(
-        status_code=status.HTTP_400_BAD_REQUEST,
-        content=CommonResponseModel(
-            status=ResponseTextStatus.EXCEPTION,
-            message="Validation failed",
-            data=errors
-        ).model_dump()
-    )
+    return CommonJSONResponse(errors, status_code=status.HTTP_400_BAD_REQUEST, message="Validation failed")
 
 
 async def common_exception_handler(req: Request, ex: Exception):
@@ -60,11 +47,8 @@ async def common_exception_handler(req: Request, ex: Exception):
     Common exception handler
     """
 
-    return JSONResponse(
-        status_code=500,
-        content=CommonResponseModel(
-            status=ResponseTextStatus.EXCEPTION,
-            message="Internal server error",
-        ).model_dump(exclude_unset=True)
+    return CommonJSONResponse(
+        None,
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        message="Internal server error",
     )
-
