@@ -19,6 +19,7 @@ class UserBalanceResponseModel(BaseModel):
     Response model for user balance
     """
 
+    id: uuid.UUID
     currency: Currency
     amount: float
 

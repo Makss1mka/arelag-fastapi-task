@@ -7,20 +7,334 @@
   },
   "item": [
     {
+      "name": "users",
+      "item": [
+        {
+          "name": "get",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/users/53e18a35-6e30-4e56-aa9b-7f18e0182d5b",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "53e18a35-6e30-4e56-aa9b-7f18e0182d5b"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\": \"some_4@mail.ru\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/users/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "users",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "list",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/users/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "users",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "email",
+                  "value": "some_3@mail.ru",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"status\": \"BLOCKED\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/users/64d9be4d-9f07-48b6-8f3d-3540dbe3ec10",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "64d9be4d-9f07-48b6-8f3d-3540dbe3ec10"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/users/53e18a35-6e30-4e56-aa9b-7f18e0182d5b",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "53e18a35-6e30-4e56-aa9b-7f18e0182d5b"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "transactions",
+      "item": [
+        {
+          "name": "get",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/transactions/6a4d97a2-9d24-4b0d-b321-6d2356b13fdc",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "transactions",
+                "6a4d97a2-9d24-4b0d-b321-6d2356b13fdc"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "create",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"currency\": \"USD\",\r\n    \"amount\": 100,\r\n    \"send_to\": \"95f3bf37-a95e-475a-ab62-c208499a8d70\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/users/003dc7fb-a10f-453b-8f73-51f9dfd02007/transactions",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "003dc7fb-a10f-453b-8f73-51f9dfd02007",
+                "transactions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "list",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/users/95f3bf37-a95e-475a-ab62-c208499a8d70/transactions",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "95f3bf37-a95e-475a-ab62-c208499a8d70",
+                "transactions"
+              ],
+              "query": [
+                {
+                  "key": "page_size",
+                  "value": "1",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "page_num",
+                  "value": "4",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "update",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"status\": \"BLOCKED\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/api/v1/users/003dc7fb-a10f-453b-8f73-51f9dfd02007/transactions/8f1c1cab-2d79-4081-b16b-e16c02c8488c/rollback",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "003dc7fb-a10f-453b-8f73-51f9dfd02007",
+                "transactions",
+                "8f1c1cab-2d79-4081-b16b-e16c02c8488c",
+                "rollback"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8080/api/v1/transactions/6a4d97a2-9d24-4b0d-b321-6d2356b13fdc",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "api",
+                "v1",
+                "transactions",
+                "6a4d97a2-9d24-4b0d-b321-6d2356b13fdc"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
       "name": "ping",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
       },
       "request": {
         "auth": {
-          "type": "bearer",
-          "bearer": [
-            {
-              "key": "token",
-              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY5MDEyMDcyLCJpYXQiOjE3Njg5MjU2NzIsImp0aSI6IjAxMWNhN2RlYjA2OTQ0NmU4YTY4Mzg0MjkxMDk5YTFkIiwidXNlcl9pZCI6ImY4YmI0ZTcwLWZjZDYtNGY1Ny1iMTg3LTRiMmYyMTg5NzZmMyJ9.dpOlvH6-DbgShSS5UnWZkbJuwILacP0XIWQRWyc1nIM",
-              "type": "string"
-            }
-          ]
+          "type": "noauth"
         },
         "method": "GET",
         "header": [
@@ -51,7 +365,12 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n    \"email\": \"some_mail@gmail.ru\",\r\n    \"password\": \"!Maks1234\"\r\n}"
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
         },
         "url": {
           "raw": "http://localhost:8080/ping",
@@ -62,6 +381,65 @@
           "port": "8080",
           "path": [
             "ping"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "urls",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-User-Id",
+            "value": "edcc5989-d244-4867-95af-4c6de9265465",
+            "type": "text",
+            "disabled": true
+          },
+          {
+            "key": "X-User-Role",
+            "value": "ADMIN",
+            "type": "text",
+            "disabled": true
+          },
+          {
+            "key": "X-User-Status",
+            "value": "ACTIVE",
+            "type": "text",
+            "disabled": true
+          },
+          {
+            "key": "X-User-Name",
+            "value": "Jornoe",
+            "type": "text",
+            "disabled": true
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/urls",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "urls"
           ]
         }
       },
