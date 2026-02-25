@@ -18,6 +18,7 @@ from src.exceptions.exception_handlers import (
     http_exception_handler,
     pydantic_exception_handler,
 )
+from src.routers.payments import payments_router
 from src.routers.system import system_router
 from src.routers.users import users_router
 
@@ -50,4 +51,5 @@ app.add_exception_handler(HTTPException, http_exception_handler)
 app.add_exception_handler(Exception, common_exception_handler)
 
 app.include_router(users_router, prefix="/api/v1/users")
+app.include_router(payments_router, prefix="/api/v1")
 app.include_router(system_router)

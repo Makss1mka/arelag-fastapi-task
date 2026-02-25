@@ -34,16 +34,14 @@ class UserStatus(StrEnum):
     FREEZED = "FREEZED"
 
 
-class TransactionStatus(StrEnum):
+class PaymentTransactionStatus(StrEnum):
     """
     Enum for payments statuses
     """
 
     PENDING = "PENDING"
-    processed = "PROCESSED"
-    PROCESSING = "PROCESSING"
-    FAILED = "FAILED"
-    CANCELLED = "CANCELLED"
+    PROCESSED = "PROCESSED"
+    RALLBACKED = "RALLBACKED"
 
 
 class ResponseTextStatus(StrEnum):

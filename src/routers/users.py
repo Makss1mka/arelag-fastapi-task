@@ -8,7 +8,6 @@ from typing import Optional
 from fastapi import APIRouter, status
 
 from src.schemas.users import (
-    UserBalanceResponseModel,
     UserCreateRequestModel,
     UserResponseModel,
     UserUpdateRequestModel,
@@ -57,5 +56,5 @@ async def patch_user(
 async def delete_user(
     user_service: UserServiceDep,
     user_id: uuid.UUID,
-) -> UserResponseModel:
+) -> str:
     return await user_service.delete_user(user_id)
