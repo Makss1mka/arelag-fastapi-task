@@ -19,11 +19,12 @@ from src.exceptions.exception_handlers import (
     pydantic_exception_handler,
 )
 from src.routers.payments import payments_router
+from src.routers.reports import report_router
 from src.routers.system import system_router
 from src.routers.users import users_router
 
 REDIS_URL: str = os.environ.get("REDIS_URL")
-DB_URL: str = os.environ.get("DB_URL")
+ASYNC_DB_URL: str = os.environ.get("ASYNC_DB_URL")
 
 LOGS_LEVEL: int = logging.DEBUG
 LOGS_FORMAT: str = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
@@ -36,7 +37,7 @@ async def app_lifespan(app: FastAPI) -> AsyncIterator[None]:
     logger: logging.Logger = logging.getLogger(__name__)
 
     async with (
-        init_db(app, connection_url=DB_URL, pool_config=DbPoolConfig()),
+        init_db(app, connection_url=ASYNC_DB_URL, pool_config=DbPoolConfig()),
         init_redis(app, connection_url=REDIS_URL, pool_config=RedisPoolConfig()),
     ):
         logger.info(f"Server is started")
@@ -52,4 +53,5 @@ app.add_exception_handler(Exception, common_exception_handler)
 
 app.include_router(users_router, prefix="/api/v1/users")
 app.include_router(payments_router, prefix="/api/v1")
-app.include_router(system_router)
+app.include_router(report_router, prefix="/api/v1")
+app.include_router(system_router, prefix="/api/v1")

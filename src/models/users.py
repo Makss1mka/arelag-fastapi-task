@@ -23,12 +23,10 @@ class User(BaseModel):
 
     balances: Mapped[List["UserBalance"]] = relationship("UserBalance", back_populates="user")
     transactions_from_me: Mapped[List["PaymentTransaction"]] = relationship(
-        "PaymentTransaction", back_populates="from_user",
-        foreign_keys="[PaymentTransaction.from_user_id]"
+        "PaymentTransaction", back_populates="from_user", foreign_keys="[PaymentTransaction.from_user_id]"
     )
     transactions_to_me: Mapped[List["PaymentTransaction"]] = relationship(
-        "PaymentTransaction", back_populates="to_user",
-        foreign_keys="[PaymentTransaction.to_user_id]"
+        "PaymentTransaction", back_populates="to_user", foreign_keys="[PaymentTransaction.to_user_id]"
     )
 
 

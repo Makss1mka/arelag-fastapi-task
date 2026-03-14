@@ -2,17 +2,18 @@
 Payments schemas
 """
 
+import uuid
 from datetime import datetime
 from decimal import Decimal
-import uuid
+
 from pydantic import BaseModel, ConfigDict, Field
 
 from src.utils.enums import Currency, PaymentTransactionStatus
 
-
 #
 # RESPONSES
 #
+
 
 class PaymentTransactionResponseModel(BaseModel):
     """
@@ -29,9 +30,11 @@ class PaymentTransactionResponseModel(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
+
 #
 # REQUESTS
 #
+
 
 class PaymentTransactionCreateRequestModel(BaseModel):
     """

@@ -7,7 +7,7 @@ import uuid
 from typing import Optional
 
 from fastapi import Request
-from sqlalchemy import select
+from sqlalchemy import and_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload, selectinload
 
@@ -15,6 +15,8 @@ from src.exceptions.users import (
     UserAlreadyActiveException,
     UserAlreadyBlockedException,
     UserAlreadyExistsException,
+    UserBalanceNotExistsException,
+    UserBalanceUpdateLessZeroException,
     UserNotExistsException,
 )
 from src.models.users import User, UserBalance
@@ -25,7 +27,7 @@ from src.schemas.users import (
     UserUpdateRequestModel,
 )
 from src.utils.annotations.basic import SessionDep
-from src.utils.enums import Currency, UserStatus
+from src.utils.enums import Currency, UserBalanceUpdateDirection, UserStatus
 
 logger = logging.getLogger(__name__)
 
@@ -130,8 +132,33 @@ class UserService:
     async def delete_user_balances(self, user: User):
         pass
 
-    async def update_user_balance(self, user_balance: UserBalance, schema: UserBalanceUpdateRequestModel):
-        pass
+    async def update_user_balance(self, user_id: uuid.UUID, schema: UserBalanceUpdateRequestModel):
+        user = (
+            await self._session.execute(select(User).where(User.id == user_id).options(joinedload(User.balances)))
+        ).scalar()
+
+        if not user:
+            raise UserNotExistsException()
+
+        updating_balacne = None
+        for balance in user.balances:
+            if balance.currency == schema.currency:
+                updating_balacne = balance
+
+        if not updating_balacne:
+            raise UserBalanceNotExistsException()
+
+        if schema.direction == UserBalanceUpdateDirection.DOWN and updating_balacne.amount - schema.amount < 0:
+            raise UserBalanceUpdateLessZeroException()
+
+        if schema.direction == UserBalanceUpdateDirection.DOWN:
+            updating_balacne.amount -= schema.amount
+        else:
+            updating_balacne.amount += schema.amount
+
+        await self._session.commit()
+
+        return UserResponseModel.model_validate(user)
 
 
 async def get_user_service(req: Request, session: SessionDep):

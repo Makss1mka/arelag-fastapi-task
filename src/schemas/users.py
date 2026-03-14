@@ -67,3 +67,4 @@ class UserBalanceUpdateRequestModel(BaseModel):
 
     amount: int = Field(..., gt=0)
     direction: UserBalanceUpdateDirection = Field(...)
+    currency: Currency = Field(...)
