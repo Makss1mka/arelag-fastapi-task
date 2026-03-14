@@ -51,6 +51,7 @@ class ResponseTextStatus(StrEnum):
 
     SUCCESS = "success"
     EXCEPTION = "exception"
+    PENDING = "pending"
 
 
 class UserBalanceUpdateDirection(StrEnum):
@@ -58,5 +59,5 @@ class UserBalanceUpdateDirection(StrEnum):
     Enum class for updating user balance, it represents direction of balance change (Up or Down)
     """
 
-    UP = "up"
-    DOWN = "down"
+    UP = "UP"
+    DOWN = "DOWN"

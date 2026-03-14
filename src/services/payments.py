@@ -10,19 +10,22 @@ from sqlalchemy import and_, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.exceptions.common import NegativeBalanceException
-from src.exceptions.transactions import CreateTransactionForBlockedUserException, TransactionAlreadyRollbackedException, TransactionDoesNotBelongToUserException, TransactionNotExistsException, UpdateTransactionForBlockedUserException
+from src.exceptions.transactions import (
+    CreateTransactionForBlockedUserException,
+    TransactionAlreadyRollbackedException,
+    TransactionDoesNotBelongToUserException,
+    TransactionNotExistsException,
+    UpdateTransactionForBlockedUserException,
+)
 from src.exceptions.users import (
     UserBalanceNotExistsException,
     UserNotExistsException,
 )
-from src.models.users import User, UserBalance
 from src.models.payments import PaymentTransaction
-from src.schemas.payments import (
-    PaymentTransactionResponseModel,
-    PaymentTransactionCreateRequestModel
-)
+from src.models.users import User, UserBalance
+from src.schemas.payments import PaymentTransactionCreateRequestModel, PaymentTransactionResponseModel
 from src.utils.annotations.basic import SessionDep
-from src.utils.enums import Currency, UserStatus, PaymentTransactionStatus
+from src.utils.enums import Currency, PaymentTransactionStatus, UserStatus
 
 logger = logging.getLogger(__name__)
 
@@ -41,16 +44,16 @@ class PaymentService:
         Returns reponse model.
         """
 
-        return PaymentTransactionResponseModel.model_validate(
-            await self._get_transaction(transaction_id)
-        )
+        return PaymentTransactionResponseModel.model_validate(await self._get_transaction(transaction_id))
 
-    async def create_transaction(self, user_id: uuid.UUID, schema: PaymentTransactionCreateRequestModel) -> PaymentTransactionResponseModel:
+    async def create_transaction(
+        self, user_id: uuid.UUID, schema: PaymentTransactionCreateRequestModel
+    ) -> PaymentTransactionResponseModel:
         """
         Creates payment transaction.
         Finds user balances with currency matching schemas's currency and make transfer.
         """
-        
+
         from_user = await self._get_user(user_id)
         if from_user.status == UserStatus.BLOCKED:
             raise CreateTransactionForBlockedUserException("Your profile is blocked")
@@ -69,10 +72,7 @@ class PaymentService:
         to_user_balance.amount += schema.amount
 
         transaction = PaymentTransaction(
-            from_user=from_user,
-            to_user=to_user,
-            currency=schema.currency,
-            amount=schema.amount
+            from_user=from_user, to_user=to_user, currency=schema.currency, amount=schema.amount
         )
 
         self._session.add(transaction)
@@ -96,12 +96,12 @@ class PaymentService:
             raise TransactionDoesNotBelongToUserException()
         if transaction.status == PaymentTransactionStatus.RALLBACKED:
             raise TransactionAlreadyRollbackedException()
-        
+
         to_user = await self._get_user(transaction.to_user_id)
 
         to_user_balance = await self._get_user_balance(to_user.id, transaction.currency)
         from_user_balance = await self._get_user_balance(from_user.id, transaction.currency)
-        
+
         if to_user_balance.amount - transaction.amount < 0:
             raise NegativeBalanceException()
 
@@ -125,21 +125,20 @@ class PaymentService:
         self, page_size: int, page_num: int, user_id: uuid.UUID
     ) -> list[PaymentTransactionResponseModel]:
         await self._get_user(user_id)
-        
+
         transactions = (
-            await self._session.execute(
-                select(PaymentTransaction)
-                .order_by(PaymentTransaction.created_at.desc())
-                .where(
-                    or_(
-                       PaymentTransaction.from_user_id == user_id,
-                       PaymentTransaction.to_user_id == user_id
-                    )
+            (
+                await self._session.execute(
+                    select(PaymentTransaction)
+                    .order_by(PaymentTransaction.created_at.desc())
+                    .where(or_(PaymentTransaction.from_user_id == user_id, PaymentTransaction.to_user_id == user_id))
+                    .limit(page_size)
+                    .offset(page_num)
                 )
-                .limit(page_size)
-                .offset(page_num)
             )
-        ).scalars().all()
+            .scalars()
+            .all()
+        )
 
         result = [
             PaymentTransactionResponseModel(
@@ -149,25 +148,19 @@ class PaymentService:
                 currency=transaction.currency,
                 status=transaction.status,
                 created_at=transaction.created_at,
-                amount=transaction.amount if transaction.to_user_id == user_id else -transaction.amount
+                amount=transaction.amount if transaction.to_user_id == user_id else -transaction.amount,
             )
             for transaction in transactions
         ]
 
         return result
 
-
     async def _get_user(self, user_id: uuid.UUID) -> User:
         """
         Finds user by id
         """
 
-        user = (
-            await self._session.execute(
-                select(User)
-                .where(User.id == user_id)
-            )
-        ).scalar()
+        user = (await self._session.execute(select(User).where(User.id == user_id))).scalar()
 
         if not user:
             raise UserNotExistsException()
@@ -180,10 +173,7 @@ class PaymentService:
         """
 
         transaction = (
-            await self._session.execute(
-                select(PaymentTransaction)
-                .where(PaymentTransaction.id == transaction_id)
-            )
+            await self._session.execute(select(PaymentTransaction).where(PaymentTransaction.id == transaction_id))
         ).scalar()
 
         if not transaction:
@@ -198,13 +188,7 @@ class PaymentService:
 
         user_balance = (
             await self._session.execute(
-                select(UserBalance)
-                .where(
-                    and_(
-                        UserBalance.user_id == user_id,
-                        UserBalance.currency == currency
-                    )
-                )
+                select(UserBalance).where(and_(UserBalance.user_id == user_id, UserBalance.currency == currency))
             )
         ).scalar()
 

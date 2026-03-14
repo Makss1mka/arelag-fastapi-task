@@ -28,3 +28,8 @@ class UserAlreadyActiveException(HTTPException):
 class UserBalanceNotExistsException(HTTPException):
     def __init__(self, detail: str = "User balance with this data not exists"):
         super().__init__(status_code=status.HTTP_404_NOT_FOUND, detail=detail)
+
+
+class UserBalanceUpdateLessZeroException(HTTPException):
+    def __init__(self, detail: str = "User balance is less then zero"):
+        super().__init__(status_code=status.HTTP_400_BAD_REQUEST, detail=detail)

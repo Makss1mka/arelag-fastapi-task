@@ -8,6 +8,7 @@ from typing import Optional
 from fastapi import APIRouter, status
 
 from src.schemas.users import (
+    UserBalanceUpdateRequestModel,
     UserCreateRequestModel,
     UserResponseModel,
     UserUpdateRequestModel,
@@ -58,3 +59,12 @@ async def delete_user(
     user_id: uuid.UUID,
 ) -> str:
     return await user_service.delete_user(user_id)
+
+
+@users_router.patch("/{user_id}/balances", response_model=UserResponseModel, status_code=status.HTTP_200_OK)
+async def change_balance(
+    user_service: UserServiceDep,
+    schema: UserBalanceUpdateRequestModel,
+    user_id: uuid.UUID,
+) -> UserResponseModel:
+    return await user_service.update_user_balance(user_id, schema)
